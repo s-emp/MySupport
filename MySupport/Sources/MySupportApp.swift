@@ -14,6 +14,16 @@ struct MySupportApp: App {
             // Убираем пункты меню, которые нам не нужны
             CommandGroup(replacing: .appInfo) {}
             CommandGroup(replacing: .newItem) {}
+            CommandMenu("Настройки") {
+                Button("Открыть настройки") {
+                    showSettings()
+                }
+                .keyboardShortcut(",", modifiers: .command)
+            }
         }
+    }
+    
+    func showSettings() {
+        appDelegate.showSettings()
     }
 }
