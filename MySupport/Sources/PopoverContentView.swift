@@ -30,7 +30,3 @@ struct PopoverContentView: View {
         .frame(width: 300)
     }
 }
-
-#Preview {
-    PopoverContentView(showSettings: { })
-}

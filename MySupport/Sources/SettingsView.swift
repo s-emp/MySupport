@@ -20,6 +20,7 @@ struct SettingsView: View {
             Divider()
             
             // Здесь можно добавить различные настройки
+            
             Text("Общие настройки")
                 .font(.headline)
             
@@ -37,8 +38,4 @@ struct SettingsView: View {
         .padding()
         .frame(width: 350, height: 400)
     }
-}
-
-#Preview {
-    SettingsView()
 }
