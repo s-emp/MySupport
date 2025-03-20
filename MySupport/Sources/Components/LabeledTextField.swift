@@ -13,6 +13,7 @@ struct LabeledTextField: View {
     @Binding var text: String  // Привязка к значению поля
     let labelText: String      // Текст, отображаемый над полем ввода
     let placeholder: String // Текст-подсказка в поле
+    var onNavigate: (() -> Void)? = nil
     
     private let logger = Logger(subsystem: "UI", category: "Component")
     
@@ -26,7 +27,7 @@ struct LabeledTextField: View {
                 TextField(placeholder, text: $text)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(maxWidth: .infinity)
-                Button(action: touchButton) {
+                Button(action: onNavigate ?? { }) {
                     Image(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 16))
                         .foregroundStyle(.secondary)
@@ -34,14 +35,6 @@ struct LabeledTextField: View {
                 .buttonStyle(.plain)
             }
         }
-    }
-    
-    func touchButton() {
-        guard let url = URL(string: text) else {
-            logger.info("Incorrect URL: \(text)")
-            return
-        }
-        NSWorkspace.shared.open(url)
     }
 }
 
