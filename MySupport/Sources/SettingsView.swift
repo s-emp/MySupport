@@ -7,7 +7,9 @@ struct SettingsView: View {
     
     // Локальное состояние для редактирования, которое будет сохранено только при нажатии "Сохранить"
     @State private var sfPath: String = ""
+    @State private var sfError: Bool = false
     @State private var fmsPath: String = ""
+    @State private var fmsError: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -22,6 +24,7 @@ struct SettingsView: View {
             
             LabeledTextField(
                 text: $sfPath,
+                isError: $sfError,
                 labelText: "Путь до SF",
                 placeholder: "Выберите путь до SF",
                 onNavigate: {
@@ -31,6 +34,7 @@ struct SettingsView: View {
             
             LabeledTextField(
                 text: $fmsPath,
+                isError: $fmsError,
                 labelText: "Путь до FMS",
                 placeholder: "Выберите путь до FMS",
                 onNavigate: {
@@ -50,7 +54,9 @@ struct SettingsView: View {
                 
                 Button("Сохранить") {
                     saveSettings()
-                    dismiss()
+                    if !sfError && !fmsError {
+                        dismiss()
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.return, modifiers: [])
@@ -67,6 +73,14 @@ struct SettingsView: View {
     
     // Функция сохранения настроек
     private func saveSettings() {
+        guard !sfPath.isEmpty else {
+            sfError = true
+            return
+        }
+        guard !fmsPath.isEmpty else {
+            fmsError = true
+            return
+        }
         var updatedSettings = settingsManager.settings
         updatedSettings.sfPath = sfPath
         updatedSettings.fmsPath = fmsPath

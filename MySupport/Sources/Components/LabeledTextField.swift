@@ -11,6 +11,7 @@ import OSLog
 struct LabeledTextField: View {
     
     @Binding var text: String  // Привязка к значению поля
+    @Binding var isError: Bool
     let labelText: String      // Текст, отображаемый над полем ввода
     let placeholder: String // Текст-подсказка в поле
     var onNavigate: (() -> Void)? = nil
@@ -25,8 +26,17 @@ struct LabeledTextField: View {
             
             HStack {
                 TextField(placeholder, text: $text)
+                    .disabled(true)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(isError ? Color.red : Color.clear, lineWidth: 2)
+                    )
                     .frame(maxWidth: .infinity)
+                    .onChange(of: text) {
+                        isError = false
+                    }
+                    
                 Button(action: onNavigate ?? { }) {
                     Image(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 16))
@@ -39,5 +49,5 @@ struct LabeledTextField: View {
 }
 
 #Preview {
-    LabeledTextField(text: .constant(""), labelText: "Путь до FMS", placeholder: "")
+    LabeledTextField(text: .constant(""), isError: .constant(false), labelText: "Путь до FMS", placeholder: "")
 }
